@@ -24,6 +24,3 @@ def canUnlockAll(boxes):
 
     return len(openedBoxes) == n
 
-
-crates = [[1], [2], [3], [4], []]
-print(canUnlockAll(crates))
