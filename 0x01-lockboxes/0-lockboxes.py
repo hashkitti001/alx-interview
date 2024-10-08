@@ -1,26 +1,21 @@
 #!/usr/bin/python3
-
-from collections import deque
-'''A module for working with lockboxes'''
+'''A module for working with lockboxes.
+'''
 
 
 def canUnlockAll(boxes):
-    '''
-    Checks if all boxes in the set of the boxes
-    can be unlocked
-    boxes -> List(int)
+    '''Checks if all the boxes in a list of boxes containing the keys
+    (indices) to other boxes can be unlocked given that the first
+    box is unlocked.
     '''
     n = len(boxes)
-    keySet = set({0})
-    openedBoxes = set([0])
-    queue = [0]
-    while queue:
-        currentBox = queue.pop(0)
-
-        for newKey in boxes[currentBox]:
-            if newKey not in openedBoxes and newKey < n:
-                queue.append(newKey)
-                openedBoxes.add(newKey)
-
-    return len(openedBoxes) == n
-
+    seen_boxes = set([0])
+    unseen_boxes = set(boxes[0]).difference(set([0]))
+    while len(unseen_boxes) > 0:
+        boxIdx = unseen_boxes.pop()
+        if not boxIdx or boxIdx >= n or boxIdx < 0:
+            continue
+        if boxIdx not in seen_boxes:
+            unseen_boxes = unseen_boxes.union(boxes[boxIdx])
+            seen_boxes.add(boxIdx)
+    return n == len(seen_boxes)
