@@ -36,8 +36,14 @@ line_count = 0
 try:
     for line in sys.stdin:
         try:
-            match = re.match(
-                r'^(\b(?:\d{1,3}\.){3}\d{1,3}\b) - \[.*\] "GET /projects/260 HTTP/1\.1" (\d{3}) (\d+)$', line)
+            input_regex = (
+                r'^(\b(?:\d{1,3}\.){3}\d{1,3}\b)'
+                r' - \[.*\]'
+                r' "GET /projects/260 HTTP/1\.1"'
+                r' (\d{3})'
+                r' (\d+)$'
+            )
+            match = re.match(input_regex, line)
             if match:
                 line_count += 1
                 status_code = match.group(2)
