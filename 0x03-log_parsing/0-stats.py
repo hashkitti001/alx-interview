@@ -16,48 +16,52 @@ status_codes = {
     "500": 0,
 }
 
-
 def print_metrics():
-    '''Prints metrics from a stream of server request logs'''
+    """
+    Print the accumulated metrics.
+    """
     print(f"File size: {total_size}")
-    for s_code in sorted(status_codes.keys()):
-        print(f"{s_code}: {status_codes[s_code]}")
+    for code in sorted(status_codes.keys()):
+        if status_codes[code] > 0:
+            print(f"{code}: {status_codes[code]}")
 
-
-def handle_sigint(signum, frame):
-    """Handles the SIGINT signal when Ctrl + C is pressed"""
+def handle_interrupt(signum, frame):
+    """
+    Signal handler for keyboard interruption.
+    """
     print_metrics()
     sys.exit(0)
 
-
-signal.signal(signal.SIGINT, handle_sigint)
+# Register the signal handler
+signal.signal(signal.SIGINT, handle_interrupt)
 
 line_count = 0
+
 try:
     for line in sys.stdin:
+        line_count += 1
         try:
-            input_regex = (
-                r'^(\b(?:\d{1,3}\.){3}\d{1,3}\b)'
-                r' - \[.*\]'
-                r' "GET /projects/260 HTTP/1\.1"'
-                r' (\d{3})'
-                r' (\d+)$'
-            )
-            match = re.match(input_regex, line)
+            # Regex to match the log format
+            match = re.match(r'^\S+ - \[\S+\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$',
+                    line.strip())
             if match:
-                line_count += 1
-                status_code = match.group(2)
-                file_size = int(match.group(3))
-                # Update metrics
-                total_size += file_size
-                status_codes[status_code] += 1
+                status_code = match.group(1)
+                file_size = int(match.group(2))
 
-                if line_count % 10 == 0:
-                    # Print details after 10 rounds
-                    print_metrics()
+                # Update metrics
+                if status_code in status_codes:
+                    status_codes[status_code] += 1
+                total_size += file_size
+
+            # Print metrics every 10 lines
+            if line_count % 10 == 0:
+                print_metrics()
+
         except Exception:
-            # Skip any invalid input
             continue
+
+    print_metrics()
+
 except KeyboardInterrupt:
     print_metrics()
     sys.exit(0)
