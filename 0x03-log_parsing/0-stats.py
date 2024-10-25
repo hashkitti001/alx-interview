@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+'''A module to log a HTTP requests'''
 import sys
 import signal
 import re
