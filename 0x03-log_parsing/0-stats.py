@@ -2,7 +2,7 @@
 import sys
 import signal
 import re
-
+'''A module to parse logs from a web server'''
 # Initialize variables to store metrics
 total_size = 0
 status_codes = {
