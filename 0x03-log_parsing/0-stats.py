@@ -1,8 +1,9 @@
 #!/usr/bin/python3
+"""Parse a stream of HTTP server logs."""
 import sys
 import signal
 import re
-# Initialize variables to store metrics
+
 total_size = 0  # Cumulative file size of all requests
 status_codes = {
     "200": 0,  # Counts for each HTTP status code
@@ -17,14 +18,14 @@ status_codes = {
 
 
 def print_metrics():
-    '''Prints metrics from a stream of server request logs'''
+    """Print metrics from a stream of server request logs."""
     print("File size: {}".format(total_size))
     for s_code in sorted(status_codes.keys()):
         print("{}: {}".format(s_code, status_codes[s_code]))
 
 
 def handle_sigint(signum, frame):
-    """Handles the SIGINT signal when Ctrl + C is pressed"""
+    """Handle the SIGINT signal when Ctrl + C is pressed."""
     print_metrics()
     sys.exit(0)
 
