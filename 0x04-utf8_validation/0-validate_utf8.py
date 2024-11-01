@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Module for UTF-8 validation"""
+#!/usr/bin/python3
+"""Module for UTF-8 validation."""
 from typing import List
 
 
