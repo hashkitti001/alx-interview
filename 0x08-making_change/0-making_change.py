@@ -6,7 +6,7 @@ from typing import List
 def makeChange(coins: List[int], total: int) -> int:
     """
     Determine the minimum number of coins needed to meet a given total.
-    
+
     Args:
         coins (list): The values of the coin in your possession.
         total (int): The total amount to meet.
