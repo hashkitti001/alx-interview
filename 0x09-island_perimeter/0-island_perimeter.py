@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """Module containing solution to the island perimeter problem."""
-from typing import List
 
 
-def island_perimeter(grid: List[List[int]]):
+def island_perimeter(grid):
     """Solution to the island perimeter problem."""
     perimeter = 0
     rows = len(grid)
